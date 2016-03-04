@@ -1,0 +1,33 @@
+---
+appname: "CloudConsole"
+
+# Console Server Port
+port: 5000
+
+# Supported Cloud Providers
+cloudservices:
+  aws: True
+  ultradns: False
+  dnsmadeeasy: False
+
+# Datacenters
+regions:
+  - "us-east-1"
+  - "us-west-1"
+  - "us-west-2"
+  - "eu-west-1"
+
+# Database configuration
+mongodb:
+  uri: "mongodb://localhost:27017/"
+  dbname: "cloudconsole"
+
+# log config
+log:
+  file: "/tmp/cloudconsole.log"
+  # valid level : panic, fatal, error, warn, info, Debug
+  level: error
+
+ultradns:
+  username: "username"
+  password: "xyzasdfgh"
