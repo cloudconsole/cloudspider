@@ -96,7 +96,7 @@ func PruneELBFields(elb *elb.LoadBalancerDescription) storage.LoadBalancerDoc {
 }
 
 // Extract only the required fields and discard the unwanted fields
-func PruneDNSFields(dnsRec *route53.ResourceRecordSet) storage.DNSDoc {
+func PruneR53Fields(dnsRec *route53.ResourceRecordSet) storage.DNSDoc {
 	doc := new(storage.DNSDoc)
 
 	doc.CloudProvider = "Amazon"
@@ -199,6 +199,13 @@ func CrawlAllInstances(region string, cwg *sync.WaitGroup) {
 		"totalUpdated": totUpd,
 		"region": region,
 	}, "Crawled finished")
+
+	// Ensure machines collection index has been created
+	eerr := storage.EnsureMachinesIndex()
+	if eerr != nil {
+		log.Error(map[string]interface{}{}, eerr.Error())
+	}
+
 	cwg.Done()  // say AWS EC2 crawler is done
 }
 
@@ -283,11 +290,11 @@ func CrawlAllRoute53(cwg *sync.WaitGroup) {
 		var dupDocs []storage.DNSDoc
 		for _, rec := range resp.ResourceRecordSets {
 			if *rec.Type == "CNAME" || *rec.Type == "A" {
-				nDoc := PruneDNSFields(rec)
+				nDoc := PruneR53Fields(rec)
 				dID := strings.TrimSuffix(*rec.Name, ".")
 				if storage.DocExists(dID, "dns") {
 					// update if dns record already in DB
-					docsToUpd = append(docsToUpd, PruneDNSFields(rec))
+					docsToUpd = append(docsToUpd, PruneR53Fields(rec))
 				} else {
 					if len(docsToAdd) == 0 {
 						// Insert new dns record into DB
@@ -304,7 +311,6 @@ func CrawlAllRoute53(cwg *sync.WaitGroup) {
 					}
 
 				}
-
 			}
 		}
 

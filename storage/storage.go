@@ -29,10 +29,7 @@ func DBConnection() *mgo.Database {
 	return MongoSession.DB(viper.GetString("mongodb.dbname"))
 }
 
-//func Collection(CollName string) *mgo.Collection {
-//	return DBConnection().C(CollName)
-//}
-
+// Write many docs in to mongodb
 func InsertMany(Docs []interface{}, collName string, wg *sync.WaitGroup) {
 	coll := DBConnection().C(collName)
 
@@ -46,6 +43,7 @@ func InsertMany(Docs []interface{}, collName string, wg *sync.WaitGroup) {
 	}
 }
 
+// Checks if the document exists with the given ID
 func DocExists(Id string, collName string) bool {
 	coll := DBConnection().C(collName)
 
@@ -60,4 +58,23 @@ func DocExists(Id string, collName string) bool {
 	} else {
 		return false
 	}
+}
+
+// Ensure index exits
+func EnsureMachinesIndex() error {
+	coll := DBConnection().C("machines")
+
+	return coll.EnsureIndex(
+		mgo.Index{
+			Key: []string{
+				"$text:ssh_key_name",
+				"$text:type",
+				"$text:public_dns",
+				"$text:private_dns",
+				"$text:tags",
+				"$text:security_group",
+			},
+			Name: "machines_index",
+			Background: true,
+		})
 }
