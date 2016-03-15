@@ -3,33 +3,33 @@ package crawler
 import (
 	"sync"
 
-	"github.com/spf13/viper"
 	"github.com/cloudconsole/cloudspider/log"
+	"github.com/spf13/viper"
 )
 
-var wg sync.WaitGroup  // Runner wait group
+var wg sync.WaitGroup // Runner wait group
 
 func Run() {
 	if viper.GetBool("cloudservices.aws") {
 		wg.Add(1)
-		go crawlAWS()  // start the AWS Crawler
+		go crawlAWS() // start the AWS Crawler
 	}
 
 	if viper.GetBool("cloudservices.ultradns") {
 		wg.Add(1)
-		go crawlUltraDns()  // start the UltrDNS Crawler
+		go crawlUltraDns() // start the UltrDNS Crawler
 	}
 
 	if viper.GetBool("cloudservices.dnsmadeeasy") {
 		wg.Add(1)
-		go crawlDnsMadeEasy()  // start the DNSMadeEasy Crawler
+		go crawlDnsMadeEasy() // start the DNSMadeEasy Crawler
 	}
 
-	wg.Wait()  // wait for all the crawler to finish
+	wg.Wait() // wait for all the crawler to finish
 }
 
 func crawlAWS() {
-	var cwg sync.WaitGroup  // Crawler wait group
+	var cwg sync.WaitGroup // Crawler wait group
 
 	log.Info(map[string]interface{}{
 		"provider": "AWS",
@@ -57,11 +57,11 @@ func crawlAWS() {
 	log.Info(map[string]interface{}{
 		"provider": "AWS",
 	}, "Crawler finised")
-	wg.Done()  // say all the AWS Crawler is done
+	wg.Done() // say all the AWS Crawler is done
 }
 
 func crawlUltraDns() {
-	var cwg sync.WaitGroup  // Crawler wait group
+	var cwg sync.WaitGroup // Crawler wait group
 
 	log.Info(map[string]interface{}{
 		"provider": "UltraDns",
@@ -75,11 +75,11 @@ func crawlUltraDns() {
 	log.Info(map[string]interface{}{
 		"provider": "UltraDns",
 	}, "Crawler finished")
-	wg.Done()  // say UltraDns Crawler is done
+	wg.Done() // say UltraDns Crawler is done
 }
 
 func crawlDnsMadeEasy() {
-	var cwg sync.WaitGroup  // Crawler wait group
+	var cwg sync.WaitGroup // Crawler wait group
 
 	log.Info(map[string]interface{}{
 		"provider": "DnsMadeEasy",
@@ -93,5 +93,5 @@ func crawlDnsMadeEasy() {
 	log.Info(map[string]interface{}{
 		"provider": "DnsMadeEasy",
 	}, "Crawler finished")
-	wg.Done()  // say DNSMadeEasy Crawler is done
+	wg.Done() // say DNSMadeEasy Crawler is done
 }

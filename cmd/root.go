@@ -24,9 +24,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudconsole/cloudspider/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/cloudconsole/cloudspider/log"
 )
 
 var cfgFile string
@@ -74,10 +74,10 @@ func initConfig() {
 
 	viper.SetConfigName("config") // name of config file (without
 	// extension)
-	viper.AddConfigPath("/etc/cloudconsole")  // adding /etc directory as first search path
-	viper.AddConfigPath("$HOME/.cloudconsole")  // adding home directory as second search path
-	viper.AddConfigPath(".")  // optionally look for config in the working directory
-	viper.AutomaticEnv()  // read in environment variables that match
+	viper.AddConfigPath("/etc/cloudconsole")   // adding /etc directory as first search path
+	viper.AddConfigPath("$HOME/.cloudconsole") // adding home directory as second search path
+	viper.AddConfigPath(".")                   // optionally look for config in the working directory
+	viper.AutomaticEnv()                       // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err != nil {

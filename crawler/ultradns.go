@@ -1,11 +1,11 @@
 package crawler
 
 import (
-	"strings"
-	"sync"
 	"github.com/cloudconsole/cloudspider/log"
 	"github.com/cloudconsole/ultradns"
 	"github.com/spf13/viper"
+	"strings"
+	"sync"
 
 	"github.com/cloudconsole/cloudspider/storage"
 )
@@ -18,7 +18,7 @@ func PruneUDNSFields(dnsRec ultradns.RRSet) storage.DNSDoc {
 	doc.ID = strings.TrimSuffix(dnsRec.RecName, ".")
 	doc.Name = strings.TrimSuffix(dnsRec.RecName, ".")
 	rt := dnsRec.RType
-	doc.Type = rt[0:len(rt) - 4]
+	doc.Type = rt[0 : len(rt)-4]
 
 	if dnsRec.RRecords != nil {
 		for _, record := range dnsRec.RRecords {
@@ -32,7 +32,7 @@ func PruneUDNSFields(dnsRec ultradns.RRSet) storage.DNSDoc {
 func CrawlUltraDNS(cwg *sync.WaitGroup) {
 	userName := viper.GetString("ultradns.username")
 	password := viper.GetString("ultradns.password")
-	var wwg sync.WaitGroup  // Writer wait group
+	var wwg sync.WaitGroup // Writer wait group
 	totAdd := 0
 	totUpd := 0
 
@@ -66,7 +66,7 @@ func CrawlUltraDNS(cwg *sync.WaitGroup) {
 
 			for _, rec := range recs {
 				rt := rec.RType
-				if rt[0:len(rt) - 4] == "CNAME" || rt[0:len(rt) - 4] == "A" {
+				if rt[0:len(rt)-4] == "CNAME" || rt[0:len(rt)-4] == "A" {
 					dID := strings.TrimSuffix(rec.RecName, ".")
 					if storage.DocExists(dID, "dns") {
 						// update if dns record already in DB
@@ -93,12 +93,12 @@ func CrawlUltraDNS(cwg *sync.WaitGroup) {
 		}
 	}
 
-	wwg.Wait()  // wait for all the writer to finish
+	wwg.Wait() // wait for all the writer to finish
 
 	log.Debug(map[string]interface{}{
-		"servciename": "ultradns",
-		"totalAdded": totAdd,
+		"servciename":  "ultradns",
+		"totalAdded":   totAdd,
 		"totalUpdated": totUpd,
 	}, "Crawler finished")
-	cwg.Done()  // say UltraDNS crawler is done
+	cwg.Done() // say UltraDNS crawler is done
 }

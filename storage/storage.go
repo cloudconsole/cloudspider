@@ -1,9 +1,9 @@
 package storage
 
 import (
-	"gopkg.in/mgo.v2"
-	"github.com/spf13/viper"
 	log "github.com/Sirupsen/logrus"
+	"github.com/spf13/viper"
+	"gopkg.in/mgo.v2"
 	"strings"
 	"sync"
 )
@@ -39,7 +39,7 @@ func InsertMany(Docs []interface{}, collName string, wg *sync.WaitGroup) {
 				log.Fatal("Database error. Err: %v", err)
 			}
 		}
-		wg.Done()  // say write is done
+		wg.Done() // say write is done
 	}
 }
 
@@ -74,7 +74,7 @@ func EnsureMachinesIndex() error {
 				"$text:tags",
 				"$text:security_group",
 			},
-			Name: "machines_index",
+			Name:       "machines_index",
 			Background: true,
 		})
 }

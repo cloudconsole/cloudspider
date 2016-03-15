@@ -1,8 +1,8 @@
 package log
 
 import (
-	"strings"
 	"io/ioutil"
+	"strings"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/rifflock/lfshook"

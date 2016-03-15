@@ -21,8 +21,8 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"github.com/cloudconsole/cloudspider/crawler"
+	"github.com/spf13/cobra"
 )
 
 // crawlCmd represents the crawl command

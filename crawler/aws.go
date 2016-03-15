@@ -3,8 +3,8 @@
 package crawler
 
 import (
-	"sync"
 	"strings"
+	"sync"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -12,10 +12,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/elb"
 	"github.com/aws/aws-sdk-go/service/route53"
 
-	"github.com/cloudconsole/cloudspider/storage"
 	"github.com/cloudconsole/cloudspider/log"
+	"github.com/cloudconsole/cloudspider/storage"
 )
-
 
 // Extract only the required fields and discard the unwanted fields
 func PruneEC2Fields(inst *ec2.Instance) storage.MachineDoc {
@@ -158,7 +157,7 @@ func CrawlAllInstances(region string, cwg *sync.WaitGroup) {
 	conn := ec2.New(session.New(), &aws.Config{Region: &region})
 	totAdd := 0
 	totUpd := 0
-	var wwg sync.WaitGroup  // Writer wait group
+	var wwg sync.WaitGroup // Writer wait group
 
 	resp, err := conn.DescribeInstances(nil)
 	if err != nil {
@@ -191,13 +190,13 @@ func CrawlAllInstances(region string, cwg *sync.WaitGroup) {
 		}
 	}
 
-	wwg.Wait()  // wait for all the writer to finish
+	wwg.Wait() // wait for all the writer to finish
 
 	log.Debug(map[string]interface{}{
-		"servciename": "aws_ec2",
-		"totalAdded": totAdd,
+		"servciename":  "aws_ec2",
+		"totalAdded":   totAdd,
 		"totalUpdated": totUpd,
-		"region": region,
+		"region":       region,
 	}, "Crawled finished")
 
 	// Ensure machines collection index has been created
@@ -206,7 +205,7 @@ func CrawlAllInstances(region string, cwg *sync.WaitGroup) {
 		log.Error(map[string]interface{}{}, eerr.Error())
 	}
 
-	cwg.Done()  // say AWS EC2 crawler is done
+	cwg.Done() // say AWS EC2 crawler is done
 }
 
 //Crawl all the loadbalncers in a AWS cloud
@@ -214,7 +213,7 @@ func CrawlAllElbs(region string, cwg *sync.WaitGroup) {
 	conn := elb.New(session.New(), aws.NewConfig().WithRegion(region))
 	totAdd := 0
 	totUpd := 0
-	var wwg sync.WaitGroup  // Writer wait group
+	var wwg sync.WaitGroup // Writer wait group
 
 	// get all the ELBS
 	resp, err := conn.DescribeLoadBalancers(nil)
@@ -244,15 +243,15 @@ func CrawlAllElbs(region string, cwg *sync.WaitGroup) {
 		go storage.InsertMany(aDocs, "loadbalancers", &wwg)
 	}
 
-	wwg.Wait()  // wait for all the writer to finish
+	wwg.Wait() // wait for all the writer to finish
 
 	log.Debug(map[string]interface{}{
-		"servciename": "aws_elb",
-		"totalAdded": totAdd,
+		"servciename":  "aws_elb",
+		"totalAdded":   totAdd,
 		"totalUpdated": totUpd,
-		"region": region,
+		"region":       region,
 	}, "Crawler finished")
-	cwg.Done()  // say AWS ELB crawler is done
+	cwg.Done() // say AWS ELB crawler is done
 }
 
 //Crawl all the DNS records in a AWS cloud
@@ -261,7 +260,7 @@ func CrawlAllRoute53(cwg *sync.WaitGroup) {
 	var zones []string
 	totAdd := 0
 	totUpd := 0
-	var wwg sync.WaitGroup  // Writer wait group
+	var wwg sync.WaitGroup // Writer wait group
 
 	resp, err := conn.ListHostedZones(nil)
 	if err != nil {
@@ -330,12 +329,12 @@ func CrawlAllRoute53(cwg *sync.WaitGroup) {
 		}
 	}
 
-	wwg.Wait()  // wait for all the writer to finish
+	wwg.Wait() // wait for all the writer to finish
 
 	log.Debug(map[string]interface{}{
-		"servciename": "aws_route53",
-		"totalAdded": totAdd,
+		"servciename":  "aws_route53",
+		"totalAdded":   totAdd,
 		"totalUpdated": totUpd,
 	}, "Crawled finished")
-	cwg.Done()  // say AWS Route53 crawler is done
+	cwg.Done() // say AWS Route53 crawler is done
 }
