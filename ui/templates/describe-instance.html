@@ -1,0 +1,98 @@
+<!--describe-instance.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <h4 class="page-header">
+      Search Query :
+      <small>{{ .s_query }}</small>
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="page-header">
+      <h2>
+        {{ range .host.Tags }}
+          {{ if eq .Key "Name" }}
+            {{ .Value }}
+          {{ end }}
+        {{ end }}
+        ({{ .host.ID }})
+      </h2>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Instance Info</h3>
+        </div>
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            <dt>Public DNS :</dt>
+            <dd>{{ .host.PublicDns }}</dd>
+            <dt>Size :</dt>
+            <dd>{{ .host.Type }}</dd>
+            <dt>Key :</dt>
+            <dd>{{ .host.SshKeyName }}</dd>
+            {{ if .hos.IamProfile }}
+              <dt>IAM Profile</dt>
+              <dd>{{ .host.IamProfile }}</dd>
+            {{ end }}
+            <dt>Security Groups :</dt>
+            <dd>
+              {{ .host.SecurityGroup }}
+            </dd>
+            <dt>Uptime :</dt>
+            <dd>{{ .host.LaunchTime }}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    {{ $lbslen := len .lbs }}
+    {{ if gt $lbslen 0 }}
+      <div class="col-sm-5">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Elatic Load Balancers</h3>
+          </div>
+          <div class="panel-body">
+            {{ range .lbs }}
+              {{ .PublicDns }}<br>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    {{ end }}
+    {{ $dnslen := len .dns }}
+    {{ if gt $dnslen 0 }}
+      <div class="col-sm-5">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Domain Name / End Point</h3>
+          </div>
+          <div class="panel-body">
+            {{ range .dns }}
+              {{ .Name }}<br>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+</div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

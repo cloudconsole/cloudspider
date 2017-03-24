@@ -1,0 +1,11 @@
+<!--panic.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<div class="alert alert-danger" role="alert">
+  {{ .err }}
+</div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

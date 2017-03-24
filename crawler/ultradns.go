@@ -11,10 +11,10 @@ import (
 )
 
 // Extract only the required fields and discard the unwanted fields
-func PruneUDNSFields(dnsRec ultradns.RRSet) storage.DNSDoc {
+func PruneUltraDnsFields(dnsRec ultradns.RRSet) storage.DNSDoc {
 	doc := new(storage.DNSDoc)
 
-	doc.CloudProvider = "UltrDNS"
+	doc.CloudProvider = "UltraDNS"
 	doc.ID = strings.TrimSuffix(dnsRec.RecName, ".")
 	doc.Name = strings.TrimSuffix(dnsRec.RecName, ".")
 	rt := dnsRec.RType
@@ -29,7 +29,7 @@ func PruneUDNSFields(dnsRec ultradns.RRSet) storage.DNSDoc {
 	return *doc
 }
 
-func CrawlUltraDNS(cwg *sync.WaitGroup) {
+func CrawlUltraDns(cwg *sync.WaitGroup) {
 	userName := viper.GetString("ultradns.username")
 	password := viper.GetString("ultradns.password")
 	var wwg sync.WaitGroup // Writer wait group
@@ -70,9 +70,9 @@ func CrawlUltraDNS(cwg *sync.WaitGroup) {
 					dID := strings.TrimSuffix(rec.RecName, ".")
 					if storage.DocExists(dID, "dns") {
 						// update if dns record already in DB
-						uDocs = append(uDocs, PruneUDNSFields(rec))
+						uDocs = append(uDocs, PruneUltraDnsFields(rec))
 					} else {
-						aDocs = append(aDocs, PruneUDNSFields(rec))
+						aDocs = append(aDocs, PruneUltraDnsFields(rec))
 					}
 				}
 			}

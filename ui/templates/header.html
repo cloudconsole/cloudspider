@@ -1,0 +1,34 @@
+<!--header.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Cloud Spider</title>
+  <!-- Meta Data -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8 "/>
+  <meta name="description" content="Cloud Spider"/>
+  <meta name="author" content="Ashok Raja R (ashokraja.r@gmail.com)"/>
+  <meta name="keywords" content="Cloud Dashboard, Cloud Console, Cloud Spider"/>
+  <meta name="copyright" content="Copyright (c) 2016 Ashok Raja<ashokraja.r@gmail.com>"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Style Sheets (CSS) -->
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <!-- Fav Icon -->
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+  <link rel="mask-icon" href="/static/img/favicon.svg">
+  <!-- Java Scripts -->
+  <!--<script src="/static/js/react.min.js"></script>-->
+  <!--<script src="/static/js/react-dom.min.js"></script>-->
+  <!--<script src="/static/js/browser.min.js"></script>-->
+  <!--<script src="/static/js/babel.min.js"></script>-->
+  <!--<script src="/static/js/remarkable.min.js"></script>-->
+</head>
+<body>
+
+<!--Embed the menu.html template at this location-->
+{{ template "menu.html" . }}
+
+<!--Embed the sidebar.html template at this location-->
+{{ template "sidebar.html" .}}

@@ -2,12 +2,16 @@ package storage
 
 import (
 	"time"
-
-	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
+// Describes an Tags
+type Tags struct {
+	Key string
+	Value string
+}
+
 // Describes an machine
-type MachineDoc struct {
+type NodeDoc struct {
 	ID             string     `bson:"_id"`
 	State          string     `bson:"state"`
 	Virtualization string     `bson:"virtualization"`
@@ -18,7 +22,7 @@ type MachineDoc struct {
 	SecurityGroup  []string   `bson:"security_group"`
 	CloudProvider  string     `bson:"cloud_provider"`
 	SshKeyName     string     `bson:"ssh_key_name"`
-	Tags           []*ec2.Tag `bson:"tags"`
+	Tags           []Tags      `bson:"tags"`
 	IamProfile     string     `bson:"iam_profile,omitempty"`
 	LaunchTime     time.Time  `bson:"launch_time"`
 	PublicDns      string     `bson:"public_dns"`
@@ -28,7 +32,7 @@ type MachineDoc struct {
 }
 
 // Describes an load balancer
-type LoadBalancerDoc struct {
+type LBDoc struct {
 	ID            string    `bson:"_id"`
 	Name          string    `bson:"name"`
 	LaunchTime    time.Time `bson:"launch_time"`

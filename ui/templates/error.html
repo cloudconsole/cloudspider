@@ -1,0 +1,20 @@
+<!--error.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<h4 class="page-header">
+  Search Query :
+  <small>{{ .s_query }}</small>
+</h4>
+
+<div class="alert alert-danger" role="alert">
+  Invalid search keyword.
+</div>
+
+<div class="alert alert-info" role="alert">
+  Valid Keywors include : instance-id, instance name, instance public dns name
+</div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

@@ -1,14 +1,15 @@
 ---
-appname: "CloudConsole"
+appname: "Cloud Spider"
 
 # Console Server Port
 port: 5000
 
 # Supported Cloud Providers
 cloudservices:
-  aws: True
+  aws: False
   ultradns: False
   dnsmadeeasy: False
+  akamai: False
 
 # Datacenters
 regions:
@@ -20,14 +21,21 @@ regions:
 # Database configuration
 mongodb:
   uri: "mongodb://localhost:27017/"
-  dbname: "cloudconsole"
+  dbname: "cloudspider"
 
 # log config
 log:
-  file: "/tmp/cloudconsole.log"
-  # valid level : panic, fatal, error, warn, info, Debug
+  file: "/tmp/cloudspider.log"
+  # valid level : panic, fatal, error, warn, info, debug
   level: error
 
 ultradns:
   username: "username"
   password: "xyzasdfgh"
+
+akamai:
+  baseurl: "https://akamai_base_url"
+  clienttoken: "xxxxxx"
+  clientsecret: "xxxxxxx"
+  accesstoken: "xxxxxxxx"
+  maxbody: 131072

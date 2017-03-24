@@ -17,8 +17,8 @@ import (
 )
 
 // Extract only the required fields and discard the unwanted fields
-func PruneEC2Fields(inst *ec2.Instance) storage.MachineDoc {
-	doc := new(storage.MachineDoc)
+func PruneEC2Fields(inst *ec2.Instance) storage.NodeDoc {
+	doc := new(storage.NodeDoc)
 
 	doc.CloudProvider = "Amazon"
 	doc.ID = *inst.InstanceId
@@ -28,7 +28,13 @@ func PruneEC2Fields(inst *ec2.Instance) storage.MachineDoc {
 	doc.RootDevice = *inst.RootDeviceType
 	doc.Type = *inst.InstanceType
 	doc.DataCenter = *inst.Placement.AvailabilityZone
-	doc.Tags = inst.Tags
+
+	if inst.Tags != nil {
+		for _, tag := range inst.Tags {
+			tTag := storage.Tags{*tag.Key, *tag.Value}
+			doc.Tags = append(doc.Tags, tTag)
+		}
+	}
 
 	if inst.SecurityGroups != nil {
 		for i := 0; i < len(inst.SecurityGroups); i++ {
@@ -75,8 +81,8 @@ func PruneEC2Fields(inst *ec2.Instance) storage.MachineDoc {
 }
 
 // Extract only the required fields and discard the unwanted fields
-func PruneELBFields(elb *elb.LoadBalancerDescription) storage.LoadBalancerDoc {
-	doc := new(storage.LoadBalancerDoc)
+func PruneELBFields(elb *elb.LoadBalancerDescription) storage.LBDoc {
+	doc := new(storage.LBDoc)
 
 	doc.CloudProvider = "Amazon"
 	doc.ID = *elb.LoadBalancerName
@@ -170,7 +176,7 @@ func CrawlAllInstances(region string, cwg *sync.WaitGroup) {
 		for _, instance := range instances.Instances {
 			if instance.InstanceLifecycle == nil {
 				if *instance.State.Name == "running" {
-					if storage.DocExists(*instance.InstanceId, "machines") {
+					if storage.DocExists(*instance.InstanceId, "hosts") {
 						uDocs = append(uDocs, PruneEC2Fields(instance))
 					} else {
 						aDocs = append(aDocs, PruneEC2Fields(instance))
@@ -186,7 +192,7 @@ func CrawlAllInstances(region string, cwg *sync.WaitGroup) {
 		// totalInstance += numUpdateDocs
 		if noADocs != 0 {
 			wwg.Add(noADocs)
-			go storage.InsertMany(aDocs, "machines", &wwg)
+			go storage.InsertMany(aDocs, "hosts", &wwg)
 		}
 	}
 
@@ -199,8 +205,8 @@ func CrawlAllInstances(region string, cwg *sync.WaitGroup) {
 		"region":       region,
 	}, "Crawled finished")
 
-	// Ensure machines collection index has been created
-	eerr := storage.EnsureMachinesIndex()
+	// Ensure host collection index has been created
+	eerr := storage.EnsureHostIndex()
 	if eerr != nil {
 		log.Error(map[string]interface{}{}, eerr.Error())
 	}
@@ -224,7 +230,7 @@ func CrawlAllElbs(region string, cwg *sync.WaitGroup) {
 	var aDocs []interface{}
 	var uDocs []interface{}
 	for _, elb := range resp.LoadBalancerDescriptions {
-		if storage.DocExists(*elb.LoadBalancerName, "loadbalancers") {
+		if storage.DocExists(*elb.LoadBalancerName, "lbs") {
 			// update if elbs already in DB
 			uDocs = append(uDocs, PruneELBFields(elb))
 		} else {
@@ -240,7 +246,7 @@ func CrawlAllElbs(region string, cwg *sync.WaitGroup) {
 
 	if noADocs != 0 {
 		wwg.Add(noADocs)
-		go storage.InsertMany(aDocs, "loadbalancers", &wwg)
+		go storage.InsertMany(aDocs, "lbs", &wwg)
 	}
 
 	wwg.Wait() // wait for all the writer to finish

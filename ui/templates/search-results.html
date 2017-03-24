@@ -1,0 +1,64 @@
+<!--search-results.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <h4 class="page-header">
+      Search Query :
+      <small>{{ .s_query }}</small>
+    </h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <table class="table table-condensed">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Instance Name</th>
+        <th>Data Center</th>
+        <th>Project</th>
+        <th>Type</th>
+        <th>Uptime</th>
+      </tr>
+      </thead>
+      <tbody>
+        {{ range .hosts }}
+          <tr>
+            <td>
+              {{ if eq .State "running" }}
+                <a class="btn btn-success btn-xs" href="/host/{{ .ID }}" role="button">
+              {{ else if .State "terminated" }}
+                <a class="btn btn-danger btn-xs" href="/host/{{ .ID }}" role="button">
+              {{ else if eq .State "stopped" }}
+                <a class="btn btn-info btn-xs" href="/host/{{ .ID }}" role="button">
+              {{ else }}
+                <a class="btn btn-warning btn-xs" href="/host/{{ .ID }}" role="button">
+              {{ end }}
+              {{ .ID }}</a>
+            </td>
+            {{ range .Tags }}
+              {{ if eq .Key "Name" }}
+                <td>{{ .Value }}</td>
+              {{ end }}
+            {{ end }}
+            <td>{{ .DataCenter }}</td>
+            {{ range .Tags }}
+              {{ if eq .Key "Project" }}
+                <td>{{ .Value }}</td>
+              {{ end }}
+            {{ end }}
+            <td>{{ .Type }}</td>
+            <td>{{ .LaunchTime }}</td>
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

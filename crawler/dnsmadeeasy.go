@@ -4,7 +4,7 @@ import (
 	"sync"
 )
 
-func CrawlDNSMadeEasy(cwg *sync.WaitGroup) {
+func CrawlDnsMadeEasy(cwg *sync.WaitGroup) {
 	// TODO: Write DNSMadeEasy crawler
 	cwg.Done()  // say UltraDNS crawler is done
 }

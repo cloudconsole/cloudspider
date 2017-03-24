@@ -12,7 +12,7 @@ var wg sync.WaitGroup // Runner wait group
 func Run() {
 	if viper.GetBool("cloudservices.aws") {
 		wg.Add(1)
-		go crawlAWS() // start the AWS Crawler
+		go crawlAws() // start the AWS Crawler
 	}
 
 	if viper.GetBool("cloudservices.ultradns") {
@@ -25,10 +25,15 @@ func Run() {
 		go crawlDnsMadeEasy() // start the DNSMadeEasy Crawler
 	}
 
+	//if viper.GetBool("cloudservices.akamai") {
+	//	wg.Add(1)
+	//	go crawlAkamaiDns() // start the DNSMadeEasy Crawler
+	//}
+
 	wg.Wait() // wait for all the crawler to finish
 }
 
-func crawlAWS() {
+func crawlAws() {
 	var cwg sync.WaitGroup // Crawler wait group
 
 	log.Info(map[string]interface{}{
@@ -40,17 +45,29 @@ func crawlAWS() {
 	// start the AWS EC2 crawler
 	for _, region := range regions {
 		cwg.Add(1)
+		log.Info(map[string]interface{}{
+			"servciename": "aws_ec2",
+			"region": region,
+		}, "Crawler started")
 		go CrawlAllInstances(region, &cwg)
 	}
 
 	// start the AWS ELB crawler
 	for _, region := range regions {
 		cwg.Add(1)
+		log.Info(map[string]interface{}{
+			"servciename": "aws_elb",
+			"region": region,
+		}, "Crawler started")
 		go CrawlAllElbs(region, &cwg)
 	}
 
 	// start the AWS Route53 crawler
 	cwg.Add(1)
+	log.Info(map[string]interface{}{
+		"servciename": "aws_route53",
+		"region": "global",
+	}, "Crawler started")
 	go CrawlAllRoute53(&cwg)
 
 	cwg.Wait()
@@ -69,7 +86,7 @@ func crawlUltraDns() {
 
 	// start the UltraDNS crawler
 	cwg.Add(1)
-	CrawlUltraDNS(&cwg)
+	CrawlUltraDns(&cwg)
 
 	cwg.Wait()
 	log.Info(map[string]interface{}{
@@ -87,7 +104,7 @@ func crawlDnsMadeEasy() {
 
 	// start the UltraDNS crawler
 	cwg.Add(1)
-	CrawlDNSMadeEasy(&cwg)
+	CrawlDnsMadeEasy(&cwg)
 
 	cwg.Wait()
 	log.Info(map[string]interface{}{
@@ -95,3 +112,21 @@ func crawlDnsMadeEasy() {
 	}, "Crawler finished")
 	wg.Done() // say DNSMadeEasy Crawler is done
 }
+
+//func crawlAkamaiDns() {
+//	var cwg sync.WaitGroup // Crawler wait group
+//
+//	log.Info(map[string]interface{}{
+//		"provider": "AkamaiDNS",
+//	}, "Crawler started")
+//
+//	// start the UltraDNS crawler
+//	cwg.Add(1)
+//	CrawlAkamaiDns(&cwg)
+//
+//	cwg.Wait()
+//	log.Info(map[string]interface{}{
+//		"provider": "AkamaiDNS",
+//	}, "Crawler finished")
+//	wg.Done() // say DNSMadeEasy Crawler is done
+//}

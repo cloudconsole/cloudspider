@@ -26,3 +26,6 @@ _testmain.go
 # IDE files
 .idea/
 cloudspider.iml
+
+# node modules
+node_modules/

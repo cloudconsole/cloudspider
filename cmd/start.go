@@ -21,32 +21,47 @@
 package cmd
 
 import (
-	"github.com/cloudconsole/cloudspider/crawler"
 	"github.com/spf13/cobra"
+	"github.com/cloudconsole/cloudspider/crawler"
+	"github.com/cloudconsole/cloudspider/log"
+	"github.com/cloudconsole/cloudspider/ui"
 )
 
-// crawlCmd represents the crawl command
-var crawlCmd = &cobra.Command{
-	Use:   "crawl",
-	Short: "Starts the crawler process",
-	Long: `Starts the crawler process by using the default configuration or
-loading it form the configuration file or from the os environments.`,
+// startCmd represents the start command
+var startCrawlerCmd = &cobra.Command{
+	Use:   "start",
+	Short: "Starts the crawler daemon",
+	Long: `Starts the crawler daemon`,
 	Run: func(cmd *cobra.Command, args []string) {
+		log.Info(map[string]interface{}{},
+			"Unleasing the spiders")
 		crawler.Run()
 	},
 }
 
+var startUiCmd = &cobra.Command{
+	Use:   "start",
+	Short: "Starts the UI daemon",
+	Long: `Starts the UI daemon`,
+	Run: func(cmd *cobra.Command, args []string) {
+		log.Info(map[string]interface{}{},
+			"Starting the ui server")
+		ui.Run()
+	},
+}
+
 func init() {
-	RootCmd.AddCommand(crawlCmd)
+	crawlerCmd.AddCommand(startCrawlerCmd)
+	uiCmd.AddCommand(startUiCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// crawlCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// startCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// crawlCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// startCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 }
