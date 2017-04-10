@@ -29,3 +29,10 @@ cloudspider.iml
 
 # node modules
 node_modules/
+
+# Go Vendor directory
+vendor/
+
+# build binaries
+cloudspider-crawler
+cloudspider-ui

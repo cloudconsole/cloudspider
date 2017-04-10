@@ -24,6 +24,7 @@ package ui
 
 import (
 	"net/http"
+	"github.com/spf13/viper"
 	"github.com/gin-gonic/gin"
 	"github.com/ekyoung/gin-nice-recovery"
 )
@@ -50,8 +51,11 @@ func Run() {
 	// Initialize the routes
 	initializeRoutes()
 
+    // Get the bind address and tcp port
+    bindAddr := viper.GetString("bindaddr")
+
 	// Start serving the application
-	router.Run()
+	router.Run(bindAddr)
 
 }
 

@@ -7,6 +7,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/rifflock/lfshook"
 	"github.com/spf13/viper"
+    "os"
 )
 
 var termLogger = logrus.New()
@@ -61,12 +62,13 @@ func Panic(fields map[string]interface{}, msg string) {
 
 	if fields == nil {
 		fileLogger.Panic(msg)
-		if logrus.IsTerminal() {
+		logrus.IsTerminal(os.Stderr)
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.Panic(msg)
 		}
 	} else {
 		fileLogger.WithFields(fields).Panic(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.WithFields(fields).Panic(msg)
 		}
 	}
@@ -77,12 +79,12 @@ func Fatal(fields map[string]interface{}, msg string) {
 
 	if fields == nil {
 		fileLogger.Fatal(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.Fatal(msg)
 		}
 	} else {
 		fileLogger.WithFields(fields).Fatal(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.WithFields(fields).Fatal(msg)
 		}
 	}
@@ -93,12 +95,12 @@ func Error(fields map[string]interface{}, msg string) {
 
 	if fields == nil {
 		fileLogger.Error(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.Error(msg)
 		}
 	} else {
 		fileLogger.WithFields(fields).Error(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.WithFields(fields).Error(msg)
 		}
 	}
@@ -109,12 +111,12 @@ func Warn(fields map[string]interface{}, msg string) {
 
 	if fields == nil {
 		fileLogger.Warn(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.Warn(msg)
 		}
 	} else {
 		fileLogger.WithFields(fields).Warn(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.WithFields(fields).Warn(msg)
 		}
 	}
@@ -125,12 +127,12 @@ func Info(fields map[string]interface{}, msg string) {
 
 	if fields == nil {
 		fileLogger.Info(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stdout) {
 			termLogger.Info(msg)
 		}
 	} else {
 		fileLogger.WithFields(fields).Info(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stdout) {
 			termLogger.WithFields(fields).Info(msg)
 		}
 	}
@@ -141,12 +143,12 @@ func Debug(fields map[string]interface{}, msg string) {
 
 	if fields == nil {
 		fileLogger.Debug(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.Debug(msg)
 		}
 	} else {
 		fileLogger.WithFields(fields).Debug(msg)
-		if logrus.IsTerminal() {
+		if logrus.IsTerminal(os.Stderr) {
 			termLogger.WithFields(fields).Debug(msg)
 		}
 	}

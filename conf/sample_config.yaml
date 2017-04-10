@@ -1,8 +1,8 @@
 ---
-appname: "Cloud Spider"
+appname: Cloud Spider
 
-# Console Server Port
-port: 5000
+# The address:port of the interface to bind to:
+bindaddr: 127.0.0.1:5000
 
 # Supported Cloud Providers
 cloudservices:
@@ -13,29 +13,33 @@ cloudservices:
 
 # Datacenters
 regions:
-  - "us-east-1"
-  - "us-west-1"
-  - "us-west-2"
-  - "eu-west-1"
+  - us-east-1
+  - us-west-1
+  - us-west-2
+  - eu-west-1
+
+# Crawler configuration
+crawler:
+  pagesize: 100
 
 # Database configuration
 mongodb:
-  uri: "mongodb://localhost:27017/"
-  dbname: "cloudspider"
+  uri: mongodb://localhost:27017/
+  dbname: cloudspider
 
 # log config
 log:
-  file: "/tmp/cloudspider.log"
+  file: /tmp/cloudspider.log
   # valid level : panic, fatal, error, warn, info, debug
   level: error
 
 ultradns:
-  username: "username"
-  password: "xyzasdfgh"
+  username: username
+  password: xyzasdfgh
 
 akamai:
-  baseurl: "https://akamai_base_url"
-  clienttoken: "xxxxxx"
-  clientsecret: "xxxxxxx"
-  accesstoken: "xxxxxxxx"
+  baseurl: https://akamai_base_url
+  clienttoken: xxxxxx
+  clientsecret: xxxxxxx
+  accesstoken: xxxxxxxx
   maxbody: 131072
