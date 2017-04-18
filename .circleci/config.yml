@@ -10,6 +10,13 @@ jobs:
       - checkout
 
       - run:
+          name: Install dependencies
+          command: |
+            go get -u github.com/kardianos/govendor
+            mkdir vendor
+            govendor fetch -v +local
+
+      - run:
           name: Run UI unit tests
           command: go test -v -race ./ui
 
