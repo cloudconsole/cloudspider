@@ -10,18 +10,30 @@ jobs:
       - checkout
 
       - run:
-          name: Install dependencies
+          name: Install system dependencies
           command: |
-            go get -u github.com/kardianos/govendor
-            mkdir vendor
-            govendor fetch -v +local
+            wget -qO- https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-linux-amd64.tar.gz | tar -zxf -
+            mv linux-amd64/glide /usr/bin/
+            rm -rf linux-amd64/
+
+      - run:
+            name: Install backend dependencies
+            command: glide install
+
+      - run:
+          name: Install frontend dependencies
+          command: npm install
 
       - run:
           name: Run UI unit tests
           command: go test -v -race ./ui
 
       - run:
-          name: Build service
+          name: Build frontend
+          command: npm run build
+
+      - run:
+          name: Build backend
           command: go build
 
       - run:
@@ -33,4 +45,4 @@ jobs:
 
       - run:
           name: Validate service is working
-          command: curl --retry 10 --retry-delay 1 http://localhost:5000/
+          command: curl --retry 3 --retry-delay 1 http://localhost:5000/
