@@ -26,7 +26,9 @@ jobs:
 
       - run:
           name: Start service
-          command: ./cloudspider ui start
+          command: |
+            cp conf/sample_config.yaml config.yaml
+            ./cloudspider ui start
           background: true
 
       - run:
