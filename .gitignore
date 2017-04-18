@@ -33,6 +33,10 @@ node_modules/
 # Go Vendor directory
 vendor/
 
+# project js files
+ui/static/js/
+
 # build binaries
 cloudspider-crawler
 cloudspider-ui
+cloudspider
