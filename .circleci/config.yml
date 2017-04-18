@@ -31,4 +31,4 @@ jobs:
 
       - run:
           name: Validate service is working
-          command: curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:5000/
+          command: curl --retry 10 --retry-delay 1 http://localhost:5000/
