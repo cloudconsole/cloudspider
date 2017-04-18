@@ -4,7 +4,8 @@ jobs:
     working_directory: /go/src/github.com/cloudconsole/cloudspider
 
     docker:
-      - image: golang:1.8.0
+      - image: golang:1.8.
+        cmd: ["/bin/bash"]
 
     steps:
       - checkout
