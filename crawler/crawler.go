@@ -1,3 +1,23 @@
+// Copyright © 2016 Ashok Raja <ashokraja.r@gmail.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 package crawler
 
 import (
@@ -27,7 +47,7 @@ func Run() {
 
 	//if viper.GetBool("cloudservices.akamai") {
 	//	wg.Add(1)
-	//	go crawlAkamaiDns() // start the DNSMadeEasy Crawler
+	//	go crawlAkamaiDns() // start the Akamai Crawler
 	//}
 
 	wg.Wait() // wait for all the crawler to finish
@@ -47,7 +67,7 @@ func crawlAws() {
 		cwg.Add(1)
 		log.Info(map[string]interface{}{
 			"servciename": "aws_ec2",
-			"region": region,
+			"region":      region,
 		}, "Crawler started")
 		go CrawlAllInstances(region, &cwg)
 	}
@@ -57,7 +77,7 @@ func crawlAws() {
 		cwg.Add(1)
 		log.Info(map[string]interface{}{
 			"servciename": "aws_elb",
-			"region": region,
+			"region":      region,
 		}, "Crawler started")
 		go CrawlAllElbs(region, &cwg)
 	}
@@ -66,7 +86,7 @@ func crawlAws() {
 	cwg.Add(1)
 	log.Info(map[string]interface{}{
 		"servciename": "aws_route53",
-		"region": "global",
+		"region":      "global",
 	}, "Crawler started")
 	go CrawlAllRoute53(&cwg)
 
@@ -128,5 +148,5 @@ func crawlDnsMadeEasy() {
 //	log.Info(map[string]interface{}{
 //		"provider": "AkamaiDNS",
 //	}, "Crawler finished")
-//	wg.Done() // say DNSMadeEasy Crawler is done
+//	wg.Done() // say AkamaiDNS Crawler is done
 //}

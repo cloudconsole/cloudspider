@@ -4,10 +4,11 @@ import (
 	"io/ioutil"
 	"strings"
 
+	"os"
+
 	"github.com/Sirupsen/logrus"
 	"github.com/rifflock/lfshook"
 	"github.com/spf13/viper"
-    "os"
 )
 
 var termLogger = logrus.New()

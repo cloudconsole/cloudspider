@@ -27,14 +27,20 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/mattes/migrate/migrate"
 )
 
-//var tmpArticleList []article
-//var tmpUserList []user
+// Helper function to setup database with sample data
+func setupDb()  {
+    
+}
 
 // This function is used for setup before executing the test functions
 func TestMain(m *testing.M) {
-	//Set Gin to Test Mode
+	// Setup the database
+    setupDb()
+
+    //Set Gin to Test Mode
 	gin.SetMode(gin.TestMode)
 
 	// Run the other tests

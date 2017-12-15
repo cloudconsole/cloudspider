@@ -1,3 +1,5 @@
+// handlers.article.go
+//
 // Copyright © 2016 Ashok Raja <ashokraja.r@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,16 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// handlers.article.go
-
 package ui
 
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/cloudconsole/cloudspider/storage"
 	"strings"
+
+	"github.com/cloudconsole/cloudspider/storage"
+	"github.com/gin-gonic/gin"
 )
 
 func describeHost(c *gin.Context) {
@@ -67,9 +68,9 @@ func describeHost(c *gin.Context) {
 			// template
 			render(c, gin.H{
 				"s_query": sQuery,
-				"host": host,
-				"lbs": lbs,
-				"dns": dns,
+				"host":    host,
+				"lbs":     lbs,
+				"dns":     dns,
 			}, "describe-instance.html")
 		} else {
 			// If the elb/dns is not found, abort with an error
@@ -83,7 +84,7 @@ func describeHost(c *gin.Context) {
 
 // Fetch host information
 func getHost(query string) (*storage.NodeDoc, error) {
-	switch  {
+	switch {
 	case strings.HasPrefix(query, "i-"):
 		return storage.GetHostById(query)
 	case strings.HasPrefix(query, "ec2-"):

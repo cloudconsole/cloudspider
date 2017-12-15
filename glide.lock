@@ -1,8 +1,10 @@
-hash: 5b143fd4ea829416dd51bb5c31de6706ac2cabd5a4907f6dab84e533d00477c9
-updated: 2017-04-09T20:39:49.309512223+05:30
+hash: c69e4c009075b79a686a724631e0883bf814a12a3a1ee086e9c8a4c32d6f3548
+updated: 2017-08-29T13:21:08.862369199+05:30
 imports:
+- name: github.com/akamai/AkamaiOPEN-edgegrid-golang
+  version: 6a096c0442afb1f218bfdc71008d21fcad75ad05
 - name: github.com/aws/aws-sdk-go
-  version: 200fde3f632bb9f036ec0b8cb29fbc8588155ea5
+  version: e63027ac6e05f6d4ae9f97ce0294d7468ca652da
   subpackages:
   - aws
   - aws/awserr
@@ -20,6 +22,7 @@ imports:
   - aws/request
   - aws/session
   - aws/signer/v4
+  - internal/shareddefaults
   - private/protocol
   - private/protocol/ec2query
   - private/protocol/query
@@ -37,8 +40,10 @@ imports:
   version: 0c4690b3ee178d85db873d82277d89659dba387f
 - name: github.com/ekyoung/gin-nice-recovery
   version: 1654dca486db940bf0c76b0562328f40a898504e
+- name: github.com/gin-contrib/sse
+  version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
 - name: github.com/gin-gonic/gin
-  version: e2212d40c62a98b388a5eb48ecbdcf88534688ba
+  version: d459835d2b077e44f7c9b453505ee29881d5d12d
   subpackages:
   - binding
   - render
@@ -71,8 +76,14 @@ imports:
   version: bb797dc4fb8320488f47bf11de07a733d7233e1f
 - name: github.com/magiconair/properties
   version: c81f9d71af8f8cba1466501d30326b99a4e56c19
-- name: github.com/manucorporat/sse
-  version: ee05b128a739a0fb76c7ebd3ae4810c1de808d6d
+- name: github.com/mattes/migrate
+  version: afc973c4e5a6b746217c2d3950fcd110ed1ba349
+  subpackages:
+  - driver
+  - file
+  - migrate
+  - migrate/direction
+  - pipe
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/mitchellh/mapstructure
@@ -82,7 +93,7 @@ imports:
 - name: github.com/parnurzeal/gorequest
   version: c73179dd31355d86bd7692de9b47623d6d0fa696
 - name: github.com/rifflock/lfshook
-  version: 1ae91782cf87524466b000ea12d8291ea48269be
+  version: 6844c808343cb8fa357d7f141b1b990e05d24e41
 - name: github.com/Sirupsen/logrus
   version: ba1b36c82c5e05c4f912a88eab0dcd91a171688f
 - name: github.com/spf13/cast
@@ -95,10 +106,13 @@ imports:
   version: 7f60f83a2c81bc3c3c0d5297f61ddfa68da9d3b7
 - name: github.com/spf13/viper
   version: c975dc1b4eacf4ec7fdbf0873638de5d090ba323
+- name: github.com/ugorji/go
+  version: 8c0409fcbb70099c748d71f714529204975f6c3f
+  subpackages:
+  - codec
 - name: golang.org/x/net
   version: f315505cf3349909cdf013ea56690da34e96a451
   subpackages:
-  - context
   - publicsuffix
 - name: golang.org/x/sys
   version: 9d4e42a20653790449273b3c85e67d6d8bae6e2e
@@ -116,4 +130,9 @@ imports:
   - internal/scram
 - name: gopkg.in/yaml.v2
   version: f7716cbe52baa25d2e9b0d0da546fcf909fc16b4
-testImports: []
+testImports:
+- name: gopkg.in/mattes/migrate.v1
+  version: afc973c4e5a6b746217c2d3950fcd110ed1ba349
+  subpackages:
+  - file
+  - migrate/direction
